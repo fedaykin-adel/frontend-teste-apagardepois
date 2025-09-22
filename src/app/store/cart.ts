@@ -1,5 +1,6 @@
 "use client";
-import { Product } from "@/generated/prisma";
+
+import { ProductDTO } from "@/types/product";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -31,7 +32,7 @@ export type CartState = {
   /** Retorna quantidade total de itens (soma das quantidades) */
   getCount: () => number;
   /** Adiciona um item ao carrinho (incrementa se já existir) */
-  addItem: (product: Product, qty?: number) => void;
+  addItem: (product: ProductDTO, qty?: number) => void;
   /** Define a quantidade exata de um item; remove se qty <= 0 */
   setQty: (productId: string, qty: number) => void;
   /** Remove um item do carrinho */

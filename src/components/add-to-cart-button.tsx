@@ -1,12 +1,12 @@
 "use client";
 import { useCart } from "@/app/store/cart";
-import { Product } from "@/generated/prisma";
+import { ProductDTO } from "@/handler/handler";
 
 export default function AddToCartButton({
   product,
   qty = 1,
 }: {
-  product: Product;
+  product: ProductDTO;
   qty?: number;
 }) {
   const addItem = useCart((s) => s.addItem);

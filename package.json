@@ -2,9 +2,6 @@
   "name": "teste_shai_model",
   "version": "0.1.0",
   "private": true,
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
-  },
   "scripts": {
     "dev": "rm -rf node_modeles/ && rm -rf package-lock.json && npm install && next dev --turbopack",
     "build": "next build",
