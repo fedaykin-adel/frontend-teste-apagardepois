@@ -9,9 +9,11 @@ export const revalidate = 0;
 export default async function ProductPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>; // 👈 aqui muda
 }) {
-  const res = await apiGetProduct(params.slug);
+  const { slug } = await params; // 👈 resolve a Promise
+
+  const res = await apiGetProduct(slug);
   if (!res.ok || !res.data) return notFound();
 
   const product = res.data;

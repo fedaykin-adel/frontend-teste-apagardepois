@@ -1,6 +1,6 @@
+import { Product } from "@/generated/prisma";
 import Image from "next/image";
 import Link from "next/link";
-import { type Product } from "@/data/products";
 
 export default function ProductCard({ product }: { product: Product }) {
   const price = (product.priceCents / 100).toLocaleString("pt-BR", {
