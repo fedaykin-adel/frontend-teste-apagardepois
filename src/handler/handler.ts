@@ -73,6 +73,7 @@ export type OrderDTO = {
   id: string;
   createdAt: string;
   email: string;
+  userId?: string;
   totalCents: number;
   status: "PENDING" | "CONFIRMED";
   items: {
@@ -85,7 +86,33 @@ export type OrderDTO = {
 };
 
 export async function apiGetOrder(id: string) {
-  return getJSON<OrderDTO>(`${base}/orders/${id}`);
+  const res = await getJSON<any>(`${base}/orders/${id}`);
+  if (!res.ok) return res;
+
+  const o = res.data;
+  const items = (o.items ?? []).map((it: any) => ({
+    id: it.id,
+    productId: it.productId ?? it.product?.id,
+    name: it.product?.name ?? it.name ?? "Produto",
+    imageUrl: it.product?.imageUrl ?? it.imageUrl,
+    quantity: Number(it.quantity ?? 0),
+    unitPriceCents: Number(it.unitPriceCents ?? it.product?.priceCents ?? 0),
+  }));
+
+  const dto: OrderDTO = {
+    id: o.id,
+    createdAt:
+      typeof o.createdAt === "string"
+        ? o.createdAt
+        : new Date(o.createdAt).toISOString(),
+    email: o.email,
+    userId: o.userId,
+    totalCents: Number(o.totalCents ?? 0),
+    status: o.status,
+    items,
+  };
+
+  return { ok: true, data: dto } as const;
 }
 
 async function j<T>(

@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// app/store/orders/[id]/page.tsx
 import { notFound, redirect } from "next/navigation";
-import { prisma } from "@/lib/db/prisma";
 import { getServerUser } from "@/lib/session";
+import { apiGetOrder } from "@/handler/handler";
 
-// app/store/orders/[id]/page.tsx
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
 
@@ -18,22 +16,22 @@ function brl(cents: number) {
 export default async function OrderDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string }>; // no seu projeto params é Promise
 }) {
-  const { id } = await params; // 👈 resolve a Promise
+  const { id } = await params;
 
+  // exige usuário logado
   const user = await getServerUser();
   if (!user) {
     redirect(`/store/auth/login?next=/store/orders/${id}`);
   }
 
-  const order = await prisma.order.findUnique({
-    where: { id },
-    include: { items: { include: { product: true } } },
-  });
+  // busca via handler (sem prisma aqui)
+  const res = await apiGetOrder(id);
+  if (!res.ok || !res.data) return notFound();
+  const order = res.data;
 
-  if (!order) return notFound();
-
+  // autorização: apenas dono (por userId OU email)
   const isOwner =
     (order.userId && order.userId === user.id) ||
     (!order.userId && order.email === user.email);
@@ -49,12 +47,12 @@ export default async function OrderDetailPage({
       <section className="mt-6 rounded-2xl border p-4">
         <h2 className="mb-2 font-semibold">Itens</h2>
         <ul className="space-y-1 text-sm">
-          {order.items.map((i: any) => (
-            <li key={i.id} className="flex justify-between">
+          {order.items.map((i, idx) => (
+            <li key={i.productId ?? idx} className="flex justify-between">
               <span>
-                {i.product?.name ?? "Produto"} × {i.quantity}
+                {i.name ?? "Produto"} × {i.quantity}
               </span>
-              <span>{brl(i.unitPriceCents * i.quantity)}</span>
+              <span>{brl(i.priceCents * i.quantity)}</span>{" "}
             </li>
           ))}
         </ul>
