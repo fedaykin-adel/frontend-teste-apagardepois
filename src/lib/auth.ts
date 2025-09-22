@@ -1,5 +1,3 @@
-import {} from "@/generated/prisma";
-import {} from "crypto";
 import { jwtVerify } from "jose";
 
 const SECRET = process.env.AUTH_SECRET || "dev-secret-change-me";
