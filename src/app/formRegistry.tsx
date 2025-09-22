@@ -1,20 +1,20 @@
-import { fieldsRegister, TextFields } from "thulhaiim";
-import TextInput from "./component/textIntput";
+// import { fieldsRegister, TextFields } from "thulhaiim";
+// import TextInput from "./component/textIntput";
 
-fieldsRegister.register<TextFields>("text", ({ control, field }) => {
-  return (
-    <TextInput
-      control={control}
-      name={field.name || ""}
-      label={field.label}
-      placeholder={field.placeholder}
-      disabled={field.disabled}
-      mask={field.mask}
-      readOnly={field.readOnly}
-      className={field.className}
-    />
-  );
-});
+// fieldsRegister.register<TextFields>("text", ({ control, field }) => {
+//   return (
+//     <TextInput
+//       control={control}
+//       name={field.name || ""}
+//       label={field.label}
+//       placeholder={field.placeholder}
+//       disabled={field.disabled}
+//       mask={field.mask}
+//       readOnly={field.readOnly}
+//       className={field.className}
+//     />
+//   );
+// });
 // import { FieldsRegister } from "@/app/NaibControl/fieldRegistryInstance";
 // import TextInput from "./forms/TextInput";
 // import SelectDinamic from "./forms/SelectDinamic";

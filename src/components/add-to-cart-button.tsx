@@ -1,6 +1,6 @@
 "use client";
 import { useCart } from "@/app/store/cart";
-import type { Product } from "@/data/products";
+import { Product } from "@/generated/prisma";
 
 export default function AddToCartButton({
   product,
